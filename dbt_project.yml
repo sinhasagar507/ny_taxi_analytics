@@ -1,0 +1,49 @@
+# dbt project configuration file.
+#
+# For more info on configuring your project:
+# - https://docs.getdbt.com/docs/reference/dbt_project.yml
+#
+# This is the dbt_project.yml file, which tells dbt how to understand your project.
+
+# Name of your dbt project
+name: 'ny_taxi_analytics'
+# Project version (optional, but good for tracking changes)
+version: '1.0.0'
+# dbt project configuration version.  Always "2" for newer dbt projects.
+config-version: 2
+
+# Which profile to use from your profiles.yml file.
+# This profile contains the database connection details.
+profile: 'default'
+
+# Where dbt should look for different types of files in your project.
+# These paths are relative to the project root.
+model-paths: ["models"]       # Where your SQL models are located
+analysis-paths: ["analyses"]     # Where your analysis SQL files are located (less common now)
+test-paths: ["tests"]           # Where your data tests are located (e.g., schema and data quality tests)
+seed-paths: ["seeds"]           # Where your CSV seed files (static data) are located
+macro-paths: ["macros"]         # Where your Jinja macros (reusable code) are located
+snapshot-paths: ["snapshots"]     # Where your snapshot configurations are located
+
+# Where dbt should write compiled SQL and logs.
+target-path: "target"
+# Directories to remove when you run `dbt clean`.
+clean-targets:
+  - "target"          # The default target directory
+  - "dbt_packages"    # Where dbt installs external packages
+
+# Configuration for models in your project.  This section allows you to
+# set configurations for entire directories of models.
+models:
+  ny_taxi_analytics: # Project name.  You can have nested configurations.
+    +database: dtc-de-course-457315  # The database where models will be created.  Important for multi-environment setups.
+    +schema: prod                   # The schema where models will be created.  Good for organizing your data.
+    staging: # Configuration for models in the "staging" directory.
+      +materialized: view         # How models in this directory should be built (view, table, incremental, etc.)
+    marts:   # Configuration for models in the "marts" directory.
+      +materialized: table        #  Models in marts are typically materialized as tables.
+
+# Variables that can be used in your dbt models.  Useful for
+# avoiding hardcoding values and making your code more flexible.
+vars:
+  payment_type_values: [0, 1, 2, 3, 4, 5, 6]  # Example:  A list of valid payment type codes.

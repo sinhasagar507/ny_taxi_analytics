@@ -1,0 +1,56 @@
+version: 2
+
+sources:
+  - name: staging
+    database: dtc-de-course-457315
+    schema: nyc_climate_data
+
+    tables:
+      - name: climate_external_table
+
+models:
+  - name: stg_climate_data
+    description: ""
+    columns:
+      - name: climate_date
+        data_type: date
+        description: ""
+        tests:
+          - unique
+          - not_null
+
+      - name: mjd
+        data_type: int64
+        description: ""
+
+      - name: cloudcover
+        data_type: numeric
+        description: ""
+
+      - name: humidity
+        data_type: numeric
+        description: ""
+
+      - name: dewpoint
+        data_type: numeric
+        description: ""
+
+      - name: precipintensity
+        data_type: numeric
+        description: ""
+
+      - name: hightemp
+        data_type: numeric
+        description: ""
+
+      - name: lowtemp
+        data_type: numeric
+        description: ""
+
+      - name: visibility
+        data_type: numeric
+        description: ""
+
+      - name: windspeed
+        data_type: numeric
+        description: ""
