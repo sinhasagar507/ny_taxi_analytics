@@ -1,49 +1,52 @@
-# dbt project configuration file.
-#
-# For more info on configuring your project:
-# - https://docs.getdbt.com/docs/reference/dbt_project.yml
-#
-# This is the dbt_project.yml file, which tells dbt how to understand your project.
 
-# Name of your dbt project
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
 name: 'ny_taxi_analytics'
-# Project version (optional, but good for tracking changes)
 version: '1.0.0'
-# dbt project configuration version.  Always "2" for newer dbt projects.
 config-version: 2
 
-# Which profile to use from your profiles.yml file.
-# This profile contains the database connection details.
+# This setting configures which "profile" dbt uses for this project.
 profile: 'default'
 
-# Where dbt should look for different types of files in your project.
-# These paths are relative to the project root.
-model-paths: ["models"]       # Where your SQL models are located
-analysis-paths: ["analyses"]     # Where your analysis SQL files are located (less common now)
-test-paths: ["tests"]           # Where your data tests are located (e.g., schema and data quality tests)
-seed-paths: ["seeds"]           # Where your CSV seed files (static data) are located
-macro-paths: ["macros"]         # Where your Jinja macros (reusable code) are located
-snapshot-paths: ["snapshots"]     # Where your snapshot configurations are located
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
 
-# Where dbt should write compiled SQL and logs.
-target-path: "target"
-# Directories to remove when you run `dbt clean`.
-clean-targets:
-  - "target"          # The default target directory
-  - "dbt_packages"    # Where dbt installs external packages
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
 
-# Configuration for models in your project.  This section allows you to
-# set configurations for entire directories of models.
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+
+# In dbt, the default materialization for a model is a view. This means, when you run 
+# dbt run or dbt build, all of your models will be built as a view in your data platform. 
+# The configuration below will override this setting for models in the example folder to 
+# instead be materialized as tables. Any models you add to the root of the models folder will 
+# continue to be built as views. These settings can be overridden in the individual model files
+# using the `{{ config(...) }}` macro.
+
 models:
-  ny_taxi_analytics: # Project name.  You can have nested configurations.
-    +database: dtc-de-course-457315  # The database where models will be created.  Important for multi-environment setups.
-    +schema: prod                   # The schema where models will be created.  Good for organizing your data.
-    staging: # Configuration for models in the "staging" directory.
-      +materialized: view         # How models in this directory should be built (view, table, incremental, etc.)
-    marts:   # Configuration for models in the "marts" directory.
-      +materialized: table        #  Models in marts are typically materialized as tables.
-
-# Variables that can be used in your dbt models.  Useful for
-# avoiding hardcoding values and making your code more flexible.
+  ny_taxi_analytics:
+      # Applies to all files under models/.../
+      staging:
+          materialized: view
+      core:
+          materialized: table
 vars:
-  payment_type_values: [0, 1, 2, 3, 4, 5, 6]  # Example:  A list of valid payment type codes.
+  payment_type_values: [1, 2, 3, 4, 5, 6]
+
+seeds: 
+    ny_taxi_analytics:
+        taxi_zone_lookup:
+            +column_types:
+                locationid: numeric
