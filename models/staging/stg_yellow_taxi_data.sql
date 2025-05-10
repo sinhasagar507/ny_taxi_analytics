@@ -6,7 +6,7 @@ with tripdata as
     row_number() over(partition by vendorid, tpep_pickup_datetime) as rn
   from {{ source('staging','yellow_taxi_external_table') }}
   where vendorid is not null 
-    and cast(tpep_pickup_datetime as date) between '2015-01-01' and '2018-12-31'
+    -- and cast(tpep_pickup_datetime as date) between '2015-01-01' and '2018-12-31'
 )
 select
    -- identifiers

@@ -27,4 +27,4 @@ from climate_data
 
 where
   date_add(date('1858-11-17'), interval cast(mjd as int64) day)
-    between date('2015-01-01') and date('2015-12-31')
+    between date('2015-01-01') and date('2016-12-31')
