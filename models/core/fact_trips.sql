@@ -63,5 +63,5 @@ left join climate_data cd
     on tu.pickup_date = cd.climate_date
 
 -- {% if var('is_test_run', default=true) %}
---   limit 100
+--   limit 1050
 -- {% endif %}
