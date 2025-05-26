@@ -42,7 +42,7 @@ select
     tu.store_and_fwd_flag, 
     tu.passenger_count, 
     tu.trip_distance, 
-    tu.trip_type, 
+    -- tu.trip_type, 
     tu.fare_amount, 
     tu.extra, 
     tu.mta_tax, 

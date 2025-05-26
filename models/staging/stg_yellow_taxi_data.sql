@@ -6,7 +6,7 @@ with tripdata as
     row_number() over(partition by vendorid, tpep_pickup_datetime) as rn
   from {{ source('staging','yellow_taxi_external_table') }}
   where vendorid is not null 
-    -- and cast(tpep_pickup_datetime as date) between '2015-01-01' and '2018-12-31'
+    and cast(tpep_pickup_datetime as date) between '2015-01-01' and '2016-12-31'
 )
 select
    -- identifiers
@@ -26,7 +26,7 @@ select
     {{ dbt.safe_cast("passenger_count", api.Column.translate_type("integer")) }} as passenger_count,
     cast(trip_distance as numeric) as trip_distance,
     -- yellow cabs are always street-hail
-    1 as trip_type,
+    -- 1.0 as trip_type,
     
     -- payment info
     cast(fare_amount as numeric) as fare_amount,

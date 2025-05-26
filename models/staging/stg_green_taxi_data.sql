@@ -9,7 +9,7 @@ with tripdata as (
     row_number() over(partition by vendorid, lpep_pickup_datetime) as rn
   from {{ source('staging','green_taxi_external_table') }}
   where vendorid is not null 
-    -- and cast(lpep_pickup_datetime as date) between '2015-01-01' and '2018-12-31'
+    and cast(lpep_pickup_datetime as date) between '2015-01-01' and '2016-12-31'
 )
 
 -- Get the mode of trip_type, aliasing the column to avoid ambiguity
@@ -46,7 +46,7 @@ select
     --     {{ dbt.safe_cast("tripdata.trip_type", api.Column.translate_type("integer")) }},
     --     trip_type_mode.mode_trip_type
     -- ) as trip_type,
-    {{ dbt.safe_cast("trip_type", api.Column.translate_type("integer")) }} as trip_type,
+    -- {{ dbt.safe_cast("trip_type", api.Column.translate_type("numeric")) }} as trip_type,
 
     -- payment info
     cast(fare_amount as numeric) as fare_amount,
