@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: staging
-    database: dtc-de-course-457315
+    database: dtc-de-course-466501
     schema: nyc_taxi_data
       # loaded_at_field: record_loaded_at
     tables:
