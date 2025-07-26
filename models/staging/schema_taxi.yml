@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: staging
-    database: dtc-de-course-457315
+    database: dtc-de-course-466501
     schema: nyc_taxi_data
       # loaded_at_field: record_loaded_at
     tables:
@@ -51,14 +51,14 @@ models:
             tests:
               - relationships:
                   to: ref('taxi_zone_lookup')
-                  field: locationid
+                  field: LocationID
                   severity: warn
           - name: dropoff_locationid 
             description: locationid where the meter was engaged.
             tests:
               - relationships:
                   to: ref('taxi_zone_lookup')
-                  field: locationid
+                  field: LocationID
           - name: RateCodeID 
             description: >
                 The final rate code in effect at the end of the trip.
