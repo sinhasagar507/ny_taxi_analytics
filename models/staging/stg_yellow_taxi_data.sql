@@ -3,7 +3,19 @@
 with tripdata as 
 (
   select *,
-    row_number() over(partition by vendorid, tpep_pickup_datetime) as rn
+    -- The tie-break MUST be deterministic. Without an order by, BigQuery picks an
+    -- arbitrary winner per (vendorid, pickup_datetime) group, and 74.4M of these groups
+    -- hold rows that disagree on the zone pair. fact_trips then inner-joins dim_zones
+    -- with borough != 'Unknown', so an arbitrary winner changes the mart's row count on
+    -- every build. Ordering by every remaining column leaves ties only between rows that
+    -- are identical, which makes the output reproducible.
+    row_number() over(
+      partition by vendorid, tpep_pickup_datetime
+      order by tpep_dropoff_datetime, pulocationid, dolocationid, payment_type,
+               ratecodeid, store_and_fwd_flag, passenger_count, trip_distance,
+               fare_amount, extra, mta_tax, tip_amount, tolls_amount,
+               improvement_surcharge, total_amount, congestion_surcharge, airport_fee
+    ) as rn
   from {{ source('staging','yellow_taxi_external_table') }}
   where vendorid is not null 
     and cast(tpep_pickup_datetime as date) between '2015-01-01' and '2016-12-31'
