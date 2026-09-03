@@ -2,7 +2,6 @@ version: 2
 
 sources:
   - name: staging
-    database: dtc-de-project-492321 # new dataset name
     schema: nyc_climate_data
 
     tables:

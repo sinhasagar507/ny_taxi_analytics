@@ -1,4 +1,9 @@
-{{ config(materialized='table') }}
+{{ config(
+    materialized='table',
+    partition_by={"field": "pickup_datetime", "data_type": "timestamp",
+                  "granularity": "month"},
+    cluster_by=["pickup_locationid", "dropoff_locationid"]
+) }}
 
 with green_tripdata as (
     select *,
