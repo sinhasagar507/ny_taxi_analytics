@@ -20,7 +20,9 @@ models:
       technology service providers.
     columns:
       - name: tripid
-        description: Primary key for this table, generated with a concatenation of vendorid+pickup_datetime
+        description: Primary key for this table, a surrogate key over every emitted source
+          column. The former vendorid+pickup_datetime key was unique only because the
+          old dedup collapsed distinct trips onto it.
         data_tests:
           - unique:
               config:
@@ -141,7 +143,9 @@ models:
       technology service providers.
     columns:
       - name: tripid
-        description: Primary key for this table, generated with a concatenation of vendorid+pickup_datetime
+        description: Primary key for this table, a surrogate key over every emitted source
+          column. The former vendorid+pickup_datetime key was unique only because the
+          old dedup collapsed distinct trips onto it.
         data_tests:
           - unique:
               config:
